@@ -1,0 +1,35 @@
+name: Deploy to Zenn and Qiita
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Zenn CLI
+      run: npm install -g zenn-cli
+
+    - name: Publish to Zenn
+      run: |
+        zenn init
+        zenn publish --yes
+
+    # - name: Install Qiita CLI
+    #   run: brew install qiitactl
+
+    # - name: Publish to Qiita
+    #   env:
+    #     QIITA_API_TOKEN: ${{ secrets.QIITA_API_TOKEN }}
+    #   run: |
+    #     qiitactl post -i ./articles/sample-article.md
